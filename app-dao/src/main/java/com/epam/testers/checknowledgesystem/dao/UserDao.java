@@ -13,6 +13,8 @@ public interface UserDao {
 
     User getUser(Integer userId);
 
+    User getUser(String login);
+
     User getUser(String login, String password);
 
     Set<User> getUsers();

@@ -4,6 +4,7 @@ import com.epam.testers.checknowledgesystem.dao.extractors.UserActionRowMapper;
 import com.epam.testers.checknowledgesystem.model.UserAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,7 @@ public class UserActionDaoImpl implements UserActionDao {
     private static final String sqlUserActionsByUserId = "SELECT * FROM UserAction WHERE userId = ?";
     private static final String insertUserAction = "INSERT INTO UserAction (actionId, userId, actionDate, actionType, actionName) VALUES (?, ?, ?, ?, ?)";
 
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }

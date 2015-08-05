@@ -4,6 +4,7 @@ import com.epam.testers.checknowledgesystem.dao.extractors.UserRowMapper;
 import com.epam.testers.checknowledgesystem.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -32,6 +33,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final String sqlUserById = "SELECT * FROM user WHERE userId = ?";
     private static final String sqlUserLoginAndPassword = "SELECT * FROM user WHERE login = ? and password = ? and deleted = false";
+    private static final String sqlUserLogin = "SELECT * FROM user WHERE login = ? and deleted = false";
     private static final String sqlCheckLoginUnique = "SELECT count(userId) FROM user WHERE login = ? and deleted = false";
     private static final String sqlAllUsers = "SELECT * FROM user WHERE userId > 0 AND deleted = false ORDER BY login, username";
     private static final String sqlUsersByManagerId = "SELECT * FROM user WHERE managerId = ? AND userId > 0 AND deleted = FALSE ORDER BY login, username";
@@ -39,6 +41,7 @@ public class UserDaoImpl implements UserDao {
     private static final String setUserBonus = "update user set bonus = ? where userId = ?";
     private static final String deleteUser = "update user set deleted = true where userId = ? and userId > 0";
 
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -53,7 +56,19 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUser(Integer userId) {
         LOGGER.debug("getUser(" + userId + ")");
-        User user = jdbcTemplate.queryForObject(sqlUserById, new Object[]{userId}, new UserRowMapper());
+        User user = null;
+        try {
+            user = jdbcTemplate.queryForObject(sqlUserById, new Object[]{userId}, new UserRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+
+        }
+        return user;
+    }
+
+    @Override
+    public User getUser(String login) {
+        LOGGER.debug("getUser(login = " + login + ")");
+        User user = jdbcTemplate.queryForObject(sqlUserLogin, new Object[]{login}, new UserRowMapper());
         return user;
     }
 
@@ -98,7 +113,11 @@ public class UserDaoImpl implements UserDao {
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(insertUser, new int[]{1});
-                ps.setNull(1, Types.INTEGER);
+                if (user.getUserId() != null) {
+                    ps.setInt(1, user.getUserId());
+                } else {
+                    ps.setNull(1, Types.INTEGER);
+                }
                 ps.setInt(2, user.getRole().ordinal());
                 ps.setInt(3, user.getManagerId());
                 ps.setString(4, user.getUserName());

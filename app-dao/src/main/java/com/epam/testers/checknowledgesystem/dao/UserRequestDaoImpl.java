@@ -1,21 +1,17 @@
 package com.epam.testers.checknowledgesystem.dao;
 
-import com.epam.testers.checknowledgesystem.dao.extractors.UserActionRowMapper;
 import com.epam.testers.checknowledgesystem.dao.extractors.UserRequestRowMapper;
-import com.epam.testers.checknowledgesystem.model.UserAction;
 import com.epam.testers.checknowledgesystem.model.UserRequest;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -27,6 +23,7 @@ import java.util.Set;
 /**
  * Created by xalf on 24/07/15.
  */
+@Repository
 public class UserRequestDaoImpl implements UserRequestDao {
 
     private final static Logger LOGGER = LogManager.getLogger();
@@ -36,6 +33,7 @@ public class UserRequestDaoImpl implements UserRequestDao {
     private static final String sqlUserRequestsByUserId = "SELECT * FROM UserRequest WHERE userId = ?";
     private static final String insertUserRequest = "INSERT INTO UserRequest (requestId, requestName, requestSum, managerId, managerName, userId, statusId, statusName, startDate, updateDate, textRequest) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    @Autowired
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }

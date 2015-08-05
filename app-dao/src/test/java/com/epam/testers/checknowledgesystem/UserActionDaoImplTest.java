@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * Created by xalf on 24/07/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/testDaoContext.xml"})
+@ContextConfiguration(locations = {"classpath:/test-dao-context.xml"})
 public class UserActionDaoImplTest {
 
     private final static Logger LOGGER = LogManager.getLogger();

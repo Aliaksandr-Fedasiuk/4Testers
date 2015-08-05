@@ -17,7 +17,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/testDaoContext.xml"})
+@ContextConfiguration(locations = {"classpath:/test-dao-context.xml"})
 public class UserDaoImplTest {
 
     private final static Logger LOGGER = LogManager.getLogger();

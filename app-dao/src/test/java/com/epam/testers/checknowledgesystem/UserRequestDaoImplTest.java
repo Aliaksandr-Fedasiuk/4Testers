@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
  * Created by xalf on 24/07/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/testDaoContext.xml"})
+@ContextConfiguration(locations = {"classpath:/test-dao-context.xml"})
 public class UserRequestDaoImplTest {
 
     private final static Logger LOGGER = LogManager.getLogger();

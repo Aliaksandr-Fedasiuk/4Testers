@@ -2,6 +2,8 @@ package com.epam.testers.checknowledgesystem.rest;
 
 import com.epam.testers.checknowledgesystem.model.User;
 import com.epam.testers.checknowledgesystem.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,8 @@ import java.util.List;
  */
 @RestController
 public class UserRestServiceImpl implements UserRestService {
+
+    private final static Logger LOGGER = LogManager.getLogger();
 
     @Autowired
     private UserService userService;
@@ -34,6 +38,8 @@ public class UserRestServiceImpl implements UserRestService {
                                       @PathVariable(value = "password") String password,
                                       @PathVariable(value = "roleName") String roleName,
                                       @PathVariable(value = "managerLogin") String managerLogin) {
+        LOGGER.debug("UserRestServiceImpl.addUser (login = " + login + ", userName = " + userName
+                + ", roleName = " + roleName + ", managerLogin = " + managerLogin + ")");
         return userService.addUser(login, userName, password, roleName, managerLogin);
     }
 }

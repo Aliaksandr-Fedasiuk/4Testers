@@ -5,6 +5,7 @@ import com.epam.testers.checknowledgesystem.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,14 @@ public class UserServiceImpl implements UserService {
         User manager = userDao.getUser(managerLogin);
         if (manager == null) {
             throw new InvalidParameterException("Manager Login is incorrect!");
+        }
+
+        try {
+            if (userDao.getUser(login) != null) {
+                throw new InvalidParameterException("User Login should be unique!");
+            }
+        } catch (IncorrectResultSizeDataAccessException ex) {
+            throw new InvalidParameterException("User Login should be unique!");
         }
 
         User user = new User(null, role, manager.getManagerId(), userName, login, password, false, 0);
